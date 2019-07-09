@@ -1,0 +1,4 @@
+﻿  pch.cpp
+  string_utils.cpp
+C:\Users\Cheenar Gupte\source\STL Extensions\CSTL\string_utils.cpp(16,23): warning C4018:  '<': signed/unsigned mismatch
+  CSTL.vcxproj -> C:\Users\Cheenar Gupte\source\STL Extensions\CSTL\Debug\CSTL.lib
