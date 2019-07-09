@@ -8,7 +8,7 @@
 #include <vector>
 #include <fstream>
 
-namespace StringUtils {
+namespace str_utils {
 	int cstr_len(char* str);
 
 	std::string replace_char(std::string str, char val, char replacement);

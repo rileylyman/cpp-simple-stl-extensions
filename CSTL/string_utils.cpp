@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "string_utils.h"
 
-namespace StringUtils {
+namespace str_utils {
 
 	int cstr_len(char* str) {
 		int count = 0;
@@ -13,7 +13,7 @@ namespace StringUtils {
 	}
 
 	std::string replace_char(std::string str, char val, char replacement) {
-		for (int ch = 0; ch < str.length(); ch++) {
+		for (unsigned int ch = 0; ch < str.length(); ch++) {
 			if (str[ch] == val) {
 				str[ch] = replacement;
 			}
@@ -69,12 +69,12 @@ namespace StringUtils {
 		return strings;
 	}
 
-	std::string StringUtils::read_file(std::string file_name) {
+	std::string read_file(std::string file_name) {
 		std::ifstream file;
 		file.open(file_name);
 
 		if (!file.is_open()) {
-			StringUtils::msg_error("Failed at opening file: " + file_name);
+			msg_error("Failed at opening file: " + file_name);
 			return "";
 		}
 
