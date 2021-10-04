@@ -4,7 +4,7 @@
 
 namespace str_utils {
 
-	int cstr_len(char* str) {
+	int cstr_len(const char* str) {
 		int count = 0;
 		while (str[count] != '\0') {
 			count += 1;
@@ -22,13 +22,18 @@ namespace str_utils {
 	}
 
 	std::string sub_string(char* str, int start, int end) {
+		std::string out;
+
 		int str_len = cstr_len(str);
 
-		if ((end - start) > str_len) {
-			return "";
+		if (end > str_len) {
+			end = str_len;
+		}
+		if (start >= end) {
+			return out;
 		}
 
-		std::string out;
+		out.reserve(end - start);
 
 		for (int i = start; i < end; i++) {
 			out += str[i];
@@ -37,48 +42,53 @@ namespace str_utils {
 		return out;
 	}
 
-	std::vector<std::string>* str_tok(std::string str, std::string delimiter) {
+	std::vector<std::string> str_tok(const std::string& str, const std::string& delimiter) {
 		int str_len = str.length();
 		int del_len = delimiter.length();
 
+		std::vector<std::string> strings;
 		if (del_len > str_len) {
-			return nullptr;
+			return strings;
 		}
 
-		std::vector<std::string>* strings = new std::vector<std::string>();
 
-		char* char_arr = new char[str_len];
-		char_arr = (char*)str.c_str();
-
-		std::string temp_str = "";
+		const char* char_arr = str.c_str();
+		std::string temp_str;
 
 		for (int i = 0; i < str_len; i++) {
 			if (sub_string(char_arr, i, i + del_len) == delimiter) {
-				strings->push_back(temp_str);
-				temp_str = "";
+				if (!temp_str.empty()) {
+				  strings.push_back(temp_str);
+				}
+				temp_str.clear();
 			}
 			else {
 				temp_str += char_arr[i];
 			}
 		}
 
-		if (temp_str != "") {
-			strings->push_back(temp_str);
+		if (!temp_str.empty()) {
+			strings.push_back(temp_str);
 		}
 
 		return strings;
 	}
 
-	std::string read_file(std::string file_name) {
-		std::ifstream file;
-		file.open(file_name);
+	std::string read_file(const std::string& file_name) {
+		std::ifstream file(file_name, std::ios::binary);
+
+		std::string data;
 
 		if (!file.is_open()) {
 			msg_error("Failed at opening file: " + file_name);
-			return "";
+			return data;
 		}
 
-		std::string data;
+		// Make the string the exact size of the file.
+		file.seekg(0, std::ios::end);
+		data.reserve(file.tellg());
+		file.seekg(0, std::ios::beg);
+
 		std::string line;
 
 		while (std::getline(file, line)) {
